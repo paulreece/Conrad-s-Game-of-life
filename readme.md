@@ -1,3 +1,7 @@
+Please run python-game-of-life2.py to see teh cooler/more fun visuals.
+
+
+
 I reccomend trying out the complex functions because they look so cool and pretty!!  
 In the command line of the directory type:  
 

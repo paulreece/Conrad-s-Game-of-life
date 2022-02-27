@@ -1,4 +1,4 @@
-Please run python-game-of-life2.py to see teh cooler/more fun visuals.
+Please run python-game-of-life2.py to see the cooler/more fun visuals.
 
 
 

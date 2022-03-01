@@ -1,5 +1,6 @@
 # Python code to implement Conway's Game Of Life
 import argparse
+from matplotlib.backend_bases import MouseEvent
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
@@ -323,6 +324,7 @@ def main():
     # Command line args are in sys.argv[1], sys.argv[2] ..
     # sys.argv[0] is the script name itself and can be ignored
     # parse arguments
+    global pa
     parser = argparse.ArgumentParser(
         description="Runs Conway's Game of Life simulation.")
 
@@ -472,18 +474,47 @@ def main():
         grid = randomGrid(N)
 
     # set up animation
-    fig, ax = plt.subplots()
-    img = ax.imshow(grid, interpolation='nearest')
-    ani = animation.FuncAnimation(fig, update, fargs=(img, grid, N, ),
-                                  frames=10,
-                                  interval=updateInterval,
-                                  save_count=50)
+    # fig, ax = plt.subplots()
+    # img = ax.imshow(grid, interpolation='nearest')
+    # ani = animation.FuncAnimation(fig, update, fargs=(img, grid, N, ),
+    #                               frames=10,
+    #                               interval=updateInterval,
+    #                               save_count=50)
 
+    class PauseAnimation:
+
+        def __init__(self):
+            fig, ax = plt.subplots()
+            img = ax.imshow(grid, interpolation='nearest')
+            self.paused = False
+            self.animation = animation.FuncAnimation(fig, update, fargs=(img, grid, N, ),
+                                                     frames=10,
+                                                     interval=updateInterval,
+                                                     save_count=50)
+            fig.canvas.mpl_connect('button_press_event', self.toggle_pause)
+            if args.movfile:
+                self.animation.save(args.movfile, fps=30, extra_args=[
+                                    '-vcodec', 'libx264'])
+
+        def toggle_pause(self, *args, **kwargs):
+            if self.paused:
+                self.animation.resume()
+                self.paused = False
+            else:
+                self.animation.pause()
+                self.paused = not self.paused
+                print("else")
+
+        def update(self, i):
+            self.n0 += i / 100 % 5
+            self.p.set_ydata(self.n0 % 20)
+            return (self.p,)
     # # of frames?
     # set output file
-    if args.movfile:
-        ani.save(args.movfile, fps=30, extra_args=['-vcodec', 'libx264'])
-
+    # if args.movfile:
+    #         ani.save(args.movfile, fps=30, extra_args=['-vcodec', 'libx264']
+    if __name__ == '__main__':
+        pa = PauseAnimation()
     plt.show()
 
 

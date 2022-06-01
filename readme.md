@@ -10,7 +10,7 @@ python python-game-of-life2.py --grid-size 64 --interval 500 --pentadec
 **Sub in figeight, hertz, pinwheel, or pulsar in the last argument to see other cool visuals!!
 
 
-In addition you can try the following args to get a different Life object/animation:
+#In addition you can try the following args to get a different Life object/animation:
 toad, 
 blinker, 
 glider, 
